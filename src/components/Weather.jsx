@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import './Weather.css';
 import search_icon from '../assets/search.png';
 import clear_icon from '../assets/clear-sky.png';
@@ -27,37 +27,54 @@ const Weather = () => {
     "13n": snow_icon,
   };
 
-  const inputRef = useRef();
+  // Use useState to track the city input value
+  const [city, setCity] = useState('');
   const { weatherData, search } = useWeather('Lagos', allIcons); // Call the custom hook
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form default behavior (page refresh)
+    search(city); // Trigger the search with the form data (city)
+  };
 
   return (
     <div className='weather'>
-      <div className="search-bar">
-        <input ref={inputRef} type="text" placeholder='Search'/>
-        <img src={search_icon} alt="search" onClick={() => search(inputRef.current.value)}/>
-      </div>
+      <form onSubmit={handleSubmit} className="search-bar">
+        <input 
+          type="text" 
+          placeholder='Search'
+          value={city} // Bind the input value to the city state
+          onChange={(e) => setCity(e.target.value)} // Update state on input change
+        />
+        <button type="submit">
+          <img src={search_icon} alt="search"/>
+        </button>
+      </form>
 
-      <img src={weatherData.icon} alt="weather" className='weather-icon'/>
-      <p className='temperature'> {weatherData.temperature}°C</p>
-      <p className='location'>{weatherData.location}</p>
+      {weatherData && (
+        <>
+          <img src={weatherData.icon} alt="weather" className='weather-icon'/>
+          <p className='temperature'> {weatherData.temperature}°C</p>
+          <p className='location'>{weatherData.location}</p>
 
-      <div className="weather-data">
-        <div className="col">
-          <img src={humidity_icon} alt="humidity" />
-          <div>
-            <p>{weatherData.humidity} %</p>
-            <span>Humidity</span>
+          <div className="weather-data">
+            <div className="col">
+              <img src={humidity_icon} alt="humidity" />
+              <div>
+                <p>{weatherData.humidity} %</p>
+                <span>Humidity</span>
+              </div>
+            </div>
+
+            <div className="col">
+              <img src={wind_icon} alt="wind" />
+              <div>
+                <p>{weatherData.windSpeed} km/h </p>
+                <span>Wind Speed</span>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="col">
-          <img src={wind_icon} alt="wind" />
-          <div>
-            <p>{weatherData.windSpeed} km/h </p>
-            <span>Wind Speed</span>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
