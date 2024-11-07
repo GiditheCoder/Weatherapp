@@ -1,6 +1,5 @@
 // created a custom state
 
-
 import { useState, useEffect } from 'react';
 
 const useWeather = (city, allIcons) => {
