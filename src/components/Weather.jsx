@@ -161,7 +161,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWeather } from './weatherSlice';
 import { useWeatherContext } from './WeatherContext';  // Use the city context
-import './Weather.css';
+// import './Weather.css';
+import './Weather.css'; // Correct relative path
+
 import { TextField, Button, CircularProgress, Card, CardContent, Grid, Typography } from '@mui/material';
  // Example icons
 import search_icon from '../assets/search.png';
